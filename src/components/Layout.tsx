@@ -56,7 +56,7 @@ export function Layout() {
             </div>
           </div>
           <button className="btn small" style={{ marginTop: 12, width: '100%' }} onClick={() => { logout(); navigate('/login'); }}>
-            <Icon name="logout" /> Switch preview
+            <Icon name="logout" /> Log out
           </button>
         </div>
       </nav>
@@ -64,7 +64,7 @@ export function Layout() {
         <header className="topbar">
           <div className="truncate">
             <div style={{ fontWeight: 800 }} className="truncate">{me.tuition.name}</div>
-            <div className="small muted">{admin ? 'Admin' : 'Staff'} preview · demo data</div>
+            <div className="small muted">{admin ? 'Admin' : me.designation}</div>
           </div>
           <div className="spacer" />
           {!admin && <Chip tone="info">Staff view</Chip>}

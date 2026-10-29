@@ -74,7 +74,7 @@ export function BatchPage() {
           </div>
         </div>
         <div className="stack">
-          <Notice>Simulated sending. Statuses update live; "Delivered" only appears when a device would report it.</Notice>
+          <Notice>Sending is simulated (no SMS provider yet). Statuses update live.</Notice>
           <div className="card"><div className="label" style={{ marginBottom: 8 }}>Message preview</div><div className="bubble">{b.previewBody}</div></div>
         </div>
       </div>

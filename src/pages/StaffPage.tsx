@@ -49,7 +49,7 @@ function AddStaff({ classes, onDone }: { classes: SchoolClass[]; onDone: (id?: s
     e.preventDefault();
     try {
       const m = await api<StaffMember>('/staff', { method: 'POST', body: { ...f, assignedClassIds: picked } });
-      toast('Staff added · invitation pending (demo — no email sent)');
+      toast('Staff added · share the invite code shown on their page');
       onDone(m.id);
     } catch (e2) {
       const field = ((e2 as ApiError).details as { field?: string } | undefined)?.field;
@@ -76,7 +76,7 @@ function AddStaff({ classes, onDone }: { classes: SchoolClass[]; onDone: (id?: s
           </div>
         </div>
       </div>
-      <Notice>The staff member appears as "Invitation pending" and sets their own password when they accept. No password is created or shown here.</Notice>
+      <Notice>After saving you get an invite code. The staff member enters their mobile number and that code in the app or website ("I have an invite code") to set their own password.</Notice>
       <div className="row" style={{ justifyContent: 'flex-end' }}>
         <button type="button" className="btn" onClick={() => onDone()}>Cancel</button>
         <button className="btn primary">Add & send invite</button>

@@ -3,10 +3,21 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import { api, setUnauthorizedHandler, tokenStore } from '../api/client';
 import type { Me, Permission } from '../api/types';
 
+export interface RegisterInput {
+  tuitionName: string;
+  city: string;
+  adminName: string;
+  phone: string;
+  email: string;
+  password: string;
+}
+
 interface AuthState {
   me: Me | null;
   ready: boolean;
-  loginAs: (role: 'admin' | 'staff', staffId?: string) => Promise<void>;
+  login: (identifier: string, password: string) => Promise<void>;
+  register: (input: RegisterInput) => Promise<void>;
+  acceptInvite: (phone: string, code: string, password: string) => Promise<void>;
   logout: () => void;
   refresh: () => Promise<void>;
   can: (p: Permission) => boolean;
@@ -15,7 +26,7 @@ interface AuthState {
 const AuthContext = createContext<AuthState | null>(null);
 
 /**
- * Demo sign-in. The UI hides what a role cannot use, but the API is what
+ * Signed-in user. The UI hides what a role cannot use, but the API is what
  * actually enforces access — every restricted request returns 403.
  */
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -45,15 +56,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refresh().finally(() => setReady(true));
   }, [refresh, logout]);
 
-  const loginAs = async (role: 'admin' | 'staff', staffId?: string) => {
-    const { token } = await api<{ token: string }>('/auth/demo-login', { method: 'POST', body: { role, staffId } });
+  const signIn = async (path: string, body: unknown) => {
+    const { token } = await api<{ token: string }>(path, { method: 'POST', body });
     tokenStore.set(token);
     await refresh();
   };
 
-  const can = (p: Permission) => !!me && (me.permissions === 'all' || me.permissions.includes(p));
+  const value: AuthState = {
+    me,
+    ready,
+    login: (identifier, password) => signIn('/auth/login', { identifier, password }),
+    register: (input) => signIn('/auth/register', { ...input, email: input.email || undefined }),
+    acceptInvite: (phone, code, password) => signIn('/auth/accept-invite', { phone, code, password }),
+    logout,
+    refresh,
+    can: (p) => !!me && (me.permissions === 'all' || me.permissions.includes(p)),
+  };
 
-  return <AuthContext.Provider value={{ me, ready, loginAs, logout, refresh, can }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

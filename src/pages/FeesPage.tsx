@@ -36,7 +36,7 @@ export function FeesPage() {
   const sendReminders = async () => {
     const ok = await confirm({
       title: 'Send fee reminders?',
-      message: `A reminder with each student's overdue amount is queued for ${plural(sum?.statusCounts.overdue ?? 0, 'parent')}. Only one reminder batch per day. Demo only — nothing is actually sent.`,
+      message: `A reminder with each student's overdue amount is queued for ${plural(sum?.statusCounts.overdue ?? 0, 'parent')}. Only one reminder batch per day. SMS sending is simulated for now.`,
       confirmLabel: 'Queue reminders',
     });
     if (!ok) return;

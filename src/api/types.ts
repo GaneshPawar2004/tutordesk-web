@@ -152,6 +152,7 @@ export interface Batch {
 export interface StaffMember {
   id: string; name: string; phone: string; email: string; designation: string; assignedClassIds: string[];
   permissions: Permission[]; joinedOn: string; isActive: boolean; accountStatus: 'active' | 'invitationPending';
+  inviteCode: string | null;
 }
 
 export interface AppNotification { id: string; type: string; title: string; body: string; createdAt: string; isRead: boolean }

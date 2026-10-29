@@ -82,7 +82,7 @@ export function ExamDetailPage() {
   };
 
   const sendResults = async () => {
-    const ok = await confirm({ title: `Send results to ${plural(exam.students.length, 'parent')}?`, message: "Each parent gets their child's subject marks, total and percentage. Demo only — no SMS is actually sent.", confirmLabel: 'Confirm & send' });
+    const ok = await confirm({ title: `Send results to ${plural(exam.students.length, 'parent')}?`, message: "Each parent gets their child's subject marks, total and percentage. SMS sending is simulated for now.", confirmLabel: 'Confirm & send' });
     if (!ok) return;
     try {
       const res = await api<{ created: boolean; batch: Batch }>(`/messages/exam-results/${exam.id}`, { method: 'POST', body: {} });

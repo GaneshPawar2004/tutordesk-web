@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { api } from '../api/client';
 import type { Permission, SchoolClass, StaffMember } from '../api/types';
 import { Icon } from '../components/icons';
-import { Avatar, Chip, ErrorState, Loading, Notice, PageHead, Switch, useUi } from '../components/ui';
+import { Avatar, Chip, ErrorState, Loading, PageHead, Switch, useUi } from '../components/ui';
 import { fmtDate, PERMISSION_INFO, phone } from '../lib/format';
 import { useApi } from '../lib/hooks';
 
@@ -69,8 +69,19 @@ export function StaffDetailPage() {
               <span style={{ flex: 1, fontWeight: 600 }}>Account active</span>
               <Switch label="Account active" checked={m.isActive} onChange={(on) => run(() => api(`/staff/${m.id}`, { method: 'PATCH', body: { isActive: on } }), on ? 'Account activated' : 'Account deactivated')} />
             </div>
-            {m.accountStatus === 'invitationPending' && (
-              <button className="btn small" style={{ marginTop: 12 }} onClick={() => run(() => api(`/staff/${m.id}/accept-invitation`, { method: 'POST' }), 'Marked as accepted')}>Mark invitation accepted (demo)</button>
+            {m.accountStatus === 'invitationPending' ? (
+              <div className="cream" style={{ marginTop: 14, padding: 18 }}>
+                <div className="label">Invite code</div>
+                <div className="num" style={{ fontSize: 30, fontWeight: 800, letterSpacing: 4, margin: '4px 0 8px' }}>{m.inviteCode ?? '—'}</div>
+                <p className="small muted" style={{ margin: '0 0 12px' }}>
+                  Share this with {m.name.split(' ')[0]}. They choose "I have an invite code", enter {phone(m.phone)}, this code and a new password.
+                </p>
+                <button className="btn small" onClick={() => run(() => api(`/staff/${m.id}/reset-invite`, { method: 'POST' }), 'New invite code created')}>Create a new code</button>
+              </div>
+            ) : (
+              <button className="btn small" style={{ marginTop: 12 }} onClick={() => run(() => api(`/staff/${m.id}/reset-invite`, { method: 'POST' }), 'Password reset · new invite code created')}>
+                Reset password (new invite code)
+              </button>
             )}
           </div>
           <div className="card">
@@ -81,7 +92,6 @@ export function StaffDetailPage() {
               ))}
             </div>
           </div>
-          <Notice>To check what {m.name.split(' ')[0]} sees, use "Switch preview" and sign in as them.</Notice>
         </div>
       </div>
     </>

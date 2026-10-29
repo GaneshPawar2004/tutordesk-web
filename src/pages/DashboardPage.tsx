@@ -41,6 +41,20 @@ export function DashboardPage() {
         </div>
       </div>
 
+      {admin && (data.classes.length === 0 || data.students === 0) && (
+        <div className="card stack" style={{ borderColor: 'var(--accent)', marginBottom: 20 }}>
+          <div>
+            <div className="h2">Get started</div>
+            <div className="small muted">Set up {me.tuition.name} in three steps.</div>
+          </div>
+          <div className="row wrap">
+            <Link className={`btn${data.classes.length ? '' : ' primary'}`} to="/academic">{data.classes.length ? '✓ Classes created' : '1 · Create your first class'}</Link>
+            <Link className={`btn${data.classes.length && !data.students ? ' primary' : ''}`} to="/students/new">2 · Add a student</Link>
+            <Link className="btn" to="/staff">3 · Invite a teacher</Link>
+          </div>
+        </div>
+      )}
+
       <div className="split">
         <div className="stack">
           <div className="cream link" role="button" tabIndex={0} onClick={() => navigate('/attendance')} onKeyDown={(e) => e.key === 'Enter' && navigate('/attendance')} style={{ cursor: 'pointer' }}>

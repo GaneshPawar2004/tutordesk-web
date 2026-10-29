@@ -31,7 +31,7 @@ export function MessagesPage() {
       <PageHead title="Messages" subtitle="Parent messages & SMS centre"
         actions={me.canSendMessages && !composing && <button className="btn primary" onClick={() => setComposing(true)}><Icon name="plus" />New announcement</button>} />
       <div className="stack" style={{ marginBottom: 20 }}>
-        <Notice>Demo mode · sending is simulated by the API. No SMS provider is connected and no real messages are sent.</Notice>
+        <Notice>SMS sending is simulated — no SMS provider is connected yet, so parents do not receive real messages.</Notice>
         {!me.canSendMessages && <Notice tone="warn">SMS sending is disabled for your account. You can view batches but not send or retry.</Notice>}
       </div>
       {composing && <Composer onDone={(id) => (id ? navigate(`/messages/${id}`) : setComposing(false))} />}
@@ -96,7 +96,7 @@ function Composer({ onDone }: { onDone: (batchId?: string) => void }) {
     e.preventDefault();
     if (title.trim().length < 3 || body.trim().length < 10) return toast('Add a title and a message of at least a sentence', 'error');
     if (!recipients) return toast('Choose at least one class', 'error');
-    const ok = await confirm({ title: 'Send announcement?', message: `"${title}" will be queued for ${recipients} parents. Demo only — no real SMS is sent.`, confirmLabel: 'Confirm & send' });
+    const ok = await confirm({ title: 'Send announcement?', message: `"${title}" will be queued for ${recipients} parents. SMS sending is simulated for now.`, confirmLabel: 'Confirm & send' });
     if (!ok || sending) return;
     setSending(true);
     try {

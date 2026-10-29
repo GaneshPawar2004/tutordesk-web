@@ -34,7 +34,7 @@ export function SessionPage() {
   const recipients = s.students.filter((st) => statuses.includes(st.status)).length;
 
   const notify = async () => {
-    const ok = await confirm({ title: `Send to ${plural(recipients, 'parent')}?`, message: 'Messages are queued on the simulated sender. Demo only — no SMS is actually sent.', confirmLabel: 'Send messages' });
+    const ok = await confirm({ title: `Send to ${plural(recipients, 'parent')}?`, message: 'Messages are queued for sending. SMS sending is simulated for now.', confirmLabel: 'Send messages' });
     if (!ok || busy) return;
     setBusy(true);
     try {
