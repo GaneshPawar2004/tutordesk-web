@@ -1,5 +1,8 @@
 const TOKEN_KEY = 'tutordesk.token';
 
+// Backend address from .env (VITE_API_URL). Empty = same origin (/api via the dev proxy).
+const API_URL = (import.meta.env.VITE_API_URL ?? '').replace(/\/+$/, '');
+
 export class ApiError extends Error {
   status: number;
   code: string;
@@ -40,7 +43,7 @@ export async function api<T>(path: string, init: { method?: string; body?: unkno
   const token = tokenStore.get();
   let res: Response;
   try {
-    res = await fetch(`/api${path}`, {
+    res = await fetch(`${API_URL}/api${path}`, {
       method: init.method ?? 'GET',
       headers: {
         'content-type': 'application/json',

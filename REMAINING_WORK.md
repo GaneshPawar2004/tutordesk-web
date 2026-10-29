@@ -7,6 +7,7 @@ React 19 + Vite + TypeScript web app for tuition admins and staff. Part of three
 
 ```bash
 # Backend first (tutordesk-backend): npm install && npm start   -> http://localhost:4000
+cp .env.example .env    # set VITE_API_URL to the backend address
 npm install
 npm run dev          # http://localhost:5173 (proxies /api to :4000)
 npm run typecheck
@@ -35,5 +36,5 @@ through against the new database backend yet**.
 1. End-to-end testing against the real backend; add Vitest/RTL tests and a Playwright smoke test.
 2. Missing UI: edit student, edit class / assign staff to class, settings & profile page,
    reports page, SMS settings view.
-3. Production config: `VITE_API_URL` (today only the dev proxy), deployment with HTTPS.
+3. Production: deploy with HTTPS and set `VITE_API_URL` in `.env` to the deployed backend.
 4. Pagination/server-side search for large tuitions; accessibility pass (dialog focus trap).
